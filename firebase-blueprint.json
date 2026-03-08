@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product available for purchase.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the product." },
+        "tagline": { "type": "string", "description": "A short catchy phrase for the product." },
+        "description": { "type": "string", "description": "A brief description of the product." },
+        "longDescription": { "type": "string", "description": "A detailed description of the product." },
+        "price": { "type": "number", "description": "The price of the product." },
+        "category": { "type": "string", "enum": ["Audio", "Wearable", "Mobile", "Home"], "description": "The category of the product." },
+        "imageUrl": { "type": "string", "description": "The main image URL of the product." },
+        "gallery": { "type": "array", "items": { "type": "string" }, "description": "A list of additional image URLs." },
+        "features": { "type": "array", "items": { "type": "string" }, "description": "A list of key features." }
+      },
+      "required": ["name", "price", "imageUrl"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer order.",
+      "type": "object",
+      "properties": {
+        "customerEmail": { "type": "string", "format": "email", "description": "The email address of the customer." },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string", "description": "The ID of the product." },
+              "quantity": { "type": "number", "description": "The quantity ordered." },
+              "priceAtPurchase": { "type": "number", "description": "The price of the product at the time of purchase." }
+            },
+            "required": ["productId", "quantity", "priceAtPurchase"]
+          },
+          "description": "The list of items in the order."
+        },
+        "totalAmount": { "type": "number", "description": "The total cost of the order." },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"], "description": "The current status of the order." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The timestamp when the order was created." }
+      },
+      "required": ["customerEmail", "items", "totalAmount", "status", "createdAt"]
+    },
+    "JournalArticle": {
+      "title": "Journal Article",
+      "description": "An article in the journal.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "The title of the article." },
+        "date": { "type": "string", "description": "The publication date." },
+        "excerpt": { "type": "string", "description": "A short summary of the article." },
+        "image": { "type": "string", "description": "The main image URL for the article." },
+        "content": { "type": "string", "description": "The full content of the article (HTML or Markdown)." }
+      },
+      "required": ["title", "date", "excerpt", "image", "content"]
+    },
+    "Newsletter": {
+      "title": "Newsletter Subscription",
+      "description": "A subscription to the newsletter.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email", "description": "The subscriber's email address." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the subscription was created." }
+      },
+      "required": ["email", "createdAt"]
+    }
+  },
+  "firestore": {
+    "products": {
+      "schema": "Product",
+      "description": "Collection of available products."
+    },
+    "orders": {
+      "schema": "Order",
+      "description": "Collection of customer orders."
+    },
+    "journal": {
+      "schema": "JournalArticle",
+      "description": "Collection of journal articles."
+    },
+    "newsletter": {
+      "schema": "Newsletter",
+      "description": "Collection of newsletter subscribers."
+    }
+  }
+}

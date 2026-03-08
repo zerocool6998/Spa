@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
+
 import React from 'react';
 
 const Hero: React.FC = () => {
@@ -10,15 +11,17 @@ const Hero: React.FC = () => {
     e.preventDefault();
     const element = document.getElementById(targetId);
     if (element) {
-      const headerOffset = 32;
+      // Manual scroll calculation to account for fixed header
+      const headerOffset = 85;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: "smooth"
       });
-
+      
+      // Update URL hash without jumping, safely ignoring errors in sandboxed environments
       try {
         window.history.pushState(null, '', `#${targetId}`);
       } catch (err) {
@@ -28,32 +31,50 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="px-5 md:px-12 pb-10">
-      <div className="relative w-full h-[540px] md:h-[760px] overflow-hidden bg-[#d4d0c6]">
-        <img
-          src="https://images.unsplash.com/photo-1513690277738-c9bc7eb2a992?auto=format&fit=crop&q=80&w=2200"
-          alt="Textured concrete wall with natural shadows"
-          className="absolute inset-0 w-full h-full object-cover grayscale"
+    <section className="relative w-full h-screen min-h-[800px] overflow-hidden bg-[#D6D1C7]">
+      
+      {/* Background Image - Serene Nature */}
+      <div className="absolute inset-0 w-full h-full">
+        <img 
+            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2000" 
+            alt="Serene misty landscape" 
+            className="w-full h-full object-cover grayscale contrast-[0.7] brightness-[0.95] animate-[pulse_15s_ease-in-out_infinite_alternate]"
         />
-        <div className="absolute inset-0 bg-[#5f5a50]/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.5),rgba(0,0,0,0.24))]" />
+        {/* Warmer Brown Overlay for Richness */}
+        <div className="absolute inset-0 bg-[#433E38]/40 mix-blend-multiply"></div>
+        {/* Deep Sepia Tone for Shadow Depth */}
+        <div className="absolute inset-0 bg-[#313030]/20"></div>
+      </div>
 
-        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
-          <h1 className="text-[58px] md:text-[120px] leading-[0.95] font-serif font-normal text-[#1f1d1a] tracking-[-0.02em] mb-6">
-            Curated wisdom.
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col justify-center items-start text-left md:items-center md:text-center px-6">
+        <div className="animate-fade-in-up w-full md:w-auto">
+          <span className="block text-xs md:text-sm font-medium uppercase tracking-[0.2em] text-white/90 mb-6 backdrop-blur-sm bg-white/10 px-4 py-2 rounded-full mx-0 md:mx-auto w-fit">
+            Digital Collection 2025
+          </span>
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-normal text-white tracking-tight mb-8 drop-shadow-sm">
+            Curated <span className="italic text-[#F5F2EB]">wisdom.</span>
           </h1>
-          <p className="text-[20px] md:text-[52px] leading-tight text-[#5f5a51] font-normal mb-8 md:mb-12">
-            A digital sanctuary for timeless ideas. Silence by default.
+          <p className="max-w-lg mx-0 md:mx-auto text-lg md:text-xl text-white/90 font-light leading-relaxed mb-12 text-shadow-sm">
+            Timeless ideas, instantly delivered. <br/>
+            A sanctuary for the modern mind.
           </p>
-
-          <a
-            href="#products"
+          
+          <a 
+            href="#products" 
             onClick={(e) => handleNavClick(e, 'products')}
-            className="inline-block px-10 py-4 md:px-16 md:py-5 rounded-2xl bg-gradient-to-b from-[#38342f] to-[#1f1d1b] text-[#efeee9] text-sm md:text-[38px] tracking-[0.1em] uppercase"
+            className="group relative px-10 py-4 bg-[#F5F2EB] text-[#2C2A26] rounded-full text-sm font-semibold uppercase tracking-widest hover:bg-white transition-all duration-500 overflow-hidden shadow-lg hover:shadow-xl inline-block"
           >
-            Acquire wisdom
+            <span className="relative z-10 group-hover:text-[#2C2A26]">Explore Library</span>
           </a>
         </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce text-white/50">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
       </div>
     </section>
   );
